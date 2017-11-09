@@ -1,5 +1,5 @@
 # CorePKG build script for sCore.
-# Copyright 2011-2012, 2015-2016 David Egan Evans <sinuhe@gnu.org>
+# Copyright 2011-2012, 2015-2017 David Egan Evans <sinuhe@gnu.org>
 #
 # This software is provided 'as-is', without any express or implied
 # warranty. In no event will the authors be held liable for any damages
@@ -21,7 +21,7 @@
 
 DIST=sCore
 PKG=corepkg
-VERSION=3
+VERSION=4
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
