@@ -37,7 +37,7 @@ fi
 
 rm -rf $PKG-$VERSION
 tar xzf $PKG-$VERSION.tar.gz || exit 4
-cd $PKG-$VERSION || exit 5
+cd $PKG || exit 5
 
 mkdir -pm 755 /tmp/sCore-$PKG/bin
 mkdir -pm 755 /tmp/sCore-$PKG/usr/man/man8
