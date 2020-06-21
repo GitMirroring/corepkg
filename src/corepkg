@@ -317,6 +317,10 @@ upgrade_pkg() {
 	then return 17
 	fi
 
+	if ! (check_pkg "$1" $DIR)
+	then return 18
+	fi
+
 	extract_pkg $1 $DIR
 	PKG="$(get_var PKG $DIR/core.info)"
 	sort -u $DIR/etc/core/$PKG.list > /tmp/oldpkg.$$
