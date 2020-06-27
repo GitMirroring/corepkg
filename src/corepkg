@@ -309,17 +309,19 @@ extract_pkg() { # [file] [dir]
 # This does not allow a package of a different name to be upgraded.
 upgrade_pkg() {
 	DIR="$(choose_dir / $2)"
-	if ! (check_dir $DIR)
+	if ! (check_dir "$DIR")
 	then return 16
 	fi
 
-	if ! (check_file $1)
+	if ! (check_file "$1")
 	then return 17
 	fi
 
-	if ! (check_pkg "$1" $DIR)
+	pkgname=$1
+	if ! (check_pkg "${pkgname%-*.cpk}" "$DIR")
 	then return 18
 	fi
+	unset pkgname
 
 	extract_pkg $1 $DIR
 	PKG="$(get_var PKG $DIR/core.info)"
