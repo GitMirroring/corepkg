@@ -1,6 +1,6 @@
 .\" corepkg - The Core GNU/Linux Distro package manager. 
 .\" Copyright 2003 Josh Devan <jd@eknitek.net> 
-.\" Copyright 2011-2012, 2015-2017 David Egan Evans <sinuhe@gnu.org>
+.\" Copyright 2011-2012, 2015-2017, 2020 David Egan Evans <sinuhe@gnu.org>
 .\" 
 .\" This program is free software; you can redistribute it and/or modify 
 .\" it under the terms of the GNU General Public License as published by 
@@ -16,25 +16,19 @@
 .\" with this program; if not, write to the Free Software Foundation, Inc., 
 .\" 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-.TH corepkg 8 "9 November 2017" "CorePKG" "sCore"
+.TH corepkg 8 "27 June 2020" "CorePKG" "sCore"
 
 .SH NAME
 corepkg - Handle core packages [.cpk]
 
 .SH SYNOPSIS
-.B corepkg -c dir
+.B corepkg -c|-l dir
 .br
-.B corepkg -i|-x file [dir]
-.br
-.B corepkg -l [dir]
-.br
-.B corepkg -u file [dir]
-.br
-.B corepkg -q file [dir]
+.B corepkg -i|-u|-x file [dir]
 .br
 .B corepkg -q file
 .br
-.B corepkg -r pkg [dir]
+.B corepkg -q|-r pkg [dir]
 
 .SH DESCRIPTION
 The CorePKG utility installs, removes, queries, and creates core packages.
@@ -123,5 +117,5 @@ corepkg -x bash-2.05b+1.cpk pkgs/core_bash
 Josh Devan, author of the Core Linux Distribution [http://coredistro.sf.net/],
 now defunct, for which he wrote the original CorePKG.
 
-David Egan Evans, author of sCore, a fork of Core, with thanks to influences
-from Prime GNU/Linux and Slackware.
+David Egan Evans, author of D. E. Evans' Coredistro, a fork of Core GNU/Linux,
+with thanks to influences from Prime GNU/Linux and Slackware.

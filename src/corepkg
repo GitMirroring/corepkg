@@ -338,11 +338,9 @@ upgrade_pkg() {
 print_usage() {
 	echo "usage:"
 	echo "corepkg -c|-l [dir]"
-	echo "corepkg -i|-x file [dir]"
-	echo "corepkg -u file [dir]"
-	echo "corepkg -q pkg [dir]"
+	echo "corepkg -i|-u|-x file [dir]"
 	echo "corepkg -q file"
-	echo "corepkg -r pkg [dir]"
+	echo "corepkg -q|-r pkg [dir]"
 }
 
 main() {
