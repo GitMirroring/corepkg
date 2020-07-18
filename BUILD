@@ -1,5 +1,5 @@
-# CorePKG build script for sCore.
-# Copyright 2011-2012, 2015-2017 David Egan Evans <sinuhe@gnu.org>
+# CorePKG build script for Core.
+# Copyright 2011-2012, 2015-2017, 2020 David Egan Evans <sinuhe@gnu.org>
 #
 # This software is provided 'as-is', without any express or implied
 # warranty. In no event will the authors be held liable for any damages
@@ -19,9 +19,9 @@
 #
 # 3. This notice may not be removed or altered from any source distribution.
 
-DIST=sCore
+DIST=Core
 PKG=corepkg
-VERSION=4
+VERSION=5
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -39,14 +39,14 @@ rm -rf $PKG-$VERSION
 tar xzf $PKG-$VERSION.tar.gz || exit 4
 cd $PKG || exit 5
 
-mkdir -pm 755 /tmp/sCore-$PKG/bin
-mkdir -pm 755 /tmp/sCore-$PKG/usr/man/man8
-mkdir -pm 755 /tmp/sCore-$PKG/usr/share/$PKG
-cp man/corepkg.8 /tmp/sCore-$PKG/usr/man/man8/
-gzip /tmp/sCore-$PKG/usr/man/man8/corepkg.8
-cp src/corepkg /tmp/sCore-$PKG/bin/ && chmod a+x /tmp/sCore-$PKG/bin/*
-cp COPYING /tmp/sCore-$PKG/usr/share/$PKG
-gzip /tmp/sCore-$PKG/usr/share/$PKG/COPYING
+mkdir -pm 755 /tmp/$DIST-$PKG/usr/bin
+mkdir -pm 755 /tmp/$DIST-$PKG/usr/man/man8
+mkdir -pm 755 /tmp/$DIST-$PKG/usr/share/$PKG
+cp man/corepkg.8 /tmp/$DIST-$PKG/usr/man/man8/
+gzip /tmp/$DIST-$PKG/usr/man/man8/corepkg.8
+cp src/corepkg /tmp/$DIST-$PKG/usr/bin/ && chmod a+x /tmp/$DIST-$PKG/usr/bin/*
+cp COPYING /tmp/$DIST-$PKG/usr/share/$PKG
+gzip /tmp/$DIST-$PKG/usr/share/$PKG/COPYING
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/
