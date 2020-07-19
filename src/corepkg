@@ -159,22 +159,24 @@ query_pkg() { # [file] | [pkg dir]
 		if ! (check_file "$1"); then return 10; fi
 		CUR="$(pwd)"
 		if echo $1 | grep -q ^/
-		then (cd "$TMPDIR"; tar xzf "$1" core.info)
-		else (cd "$TMPDIR"; tar xzf "$CUR/$1" core.info)
+		then (cd "$TMPDIR"; tar xzf "$1" core.{info,list})
+		else (cd "$TMPDIR"; tar xzf "$CUR/$1" core.{info,list})
 		fi
 
 		INFO="$TMPDIR/core.info"
+		LIST="$TMPDIR/core.list"
 	else
 		DIR="$(choose_dir / $2)"
 		if ! (check_dir "$DIR")
 		then return 11
 		fi
 
-		if ! (check_pkg "$1" $DIR)
+		if ! (check_pkg "$1" "$DIR")
 		then return 12
 		fi
 
 		INFO="$DIR/etc/core/$1.info"
+		LIST="$DIR/etc/core/$1.list"
 	fi
 
 	MAN="$TMPDIR/man"
@@ -239,6 +241,12 @@ query_pkg() { # [file] | [pkg dir]
 	then echo .SH NOTES >> $MAN
 		echo "$NOTES" >> $MAN
 	fi
+
+	echo .SH CONTENTS >> $MAN
+	for i in $(sed -e 's/^.//' "$LIST")
+	do echo $i >> $MAN
+		echo .br >> $MAN
+	done
 
 	nroff -mman $MAN 2> /dev/null | more -s
 }
