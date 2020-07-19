@@ -21,7 +21,7 @@
 
 DIST=Core
 PKG=corepkg
-VERSION=5
+VERSION=6
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
