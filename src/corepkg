@@ -72,7 +72,7 @@ print_insrem() { # [core.info]
 	echo '.TH "" "Core" "CorePKG" (Core) "CorePKG"' > $MAN
 
 	echo .SH PACKAGE >> $MAN
-	echo $(get_var PKG $1) $(get_var MAJOR $1)+$(get_var MINOR $1) >> $MAN
+	echo $(get_var PKG "$1") $(get_var MAJOR "$1")+$(get_var MINOR "$1") >> $MAN
 
 	if test "$INSTALL"
 	then echo .SH INSTALL INSTRUCTIONS >> $MAN
@@ -88,14 +88,14 @@ print_insrem() { # [core.info]
 }
 
 install_pkg() { # [file] [dir]
-	if ! (check_file $1)
+	if ! (check_file "$1")
 	then return 5
 	fi
 
 	CUR="$(pwd)"
 	if echo $1 | grep -q ^/
-	then (cd $TMPDIR; tar xzf $1 core.info)
-	else (cd $TMPDIR; tar xzf $CUR/$1 core.info)
+	then (cd $TMPDIR; tar xzf "$1" core.info)
+	else (cd $TMPDIR; tar xzf "$CUR/$1" core.info)
 	fi
 
 	PKG="$(get_var PKG $TMPDIR/core.info)"
@@ -110,8 +110,8 @@ install_pkg() { # [file] [dir]
 	fi
 
 	if echo $1 | grep -q ^/
-	then (cd $DIR; tar xzpf $1)
-	else (cd $DIR; tar xzpf $CUR/$1)
+	then (cd $DIR; tar xzpf "$1")
+	else (cd $DIR; tar xzpf "$CUR/$1")
 	fi
 
 	mv $DIR/core.info $DIR/etc/core/$PKG.info
@@ -131,9 +131,9 @@ remove_pkg() { # [pkg] [dir]
 	then return 9
 	fi
 
-	sort -u $DIR/etc/core/*.list >/tmp/allpkgs.$$
-	sort -u $DIR/etc/core/$1.list >/tmp/$1.$$
-	comm -12 /tmp/allpkgs.$$ /tmp/$1.$$ >/tmp/rmfiles.$$
+	sort -u "$DIR/etc/core/*.list" >/tmp/allpkgs.$$
+	sort -u "$DIR/etc/core/$1.list" >/tmp/"$1".$$
+	comm -12 /tmp/allpkgs.$$ /tmp/"$1".$$ >/tmp/rmfiles.$$
 	while read i
 	do rm "$DIR/$i"
 		rmdir -p $(dirname "$DIR/$i") 2> /dev/null
@@ -143,12 +143,12 @@ remove_pkg() { # [pkg] [dir]
 	then mkdir -m 755 $DIR/var/log/removed_pkgs
 	fi
 
-	mv $DIR/etc/core/$1.info $TMPDIR/core.info
+	mv "$DIR/etc/core/$1.info" "$TMPDIR/core.info"
 	version="$(get_var MAJOR $TMPDIR/core.info)"
 	release="$(get_var MINOR $TMPDIR/core.info)"
 	cat "$TMPDIR"/core.info /tmp/rmfiles.$$ \
-		> "$DIR"/var/log/removed_pkgs/$1-$version+$release-$(date +%F)
-	rm $DIR/etc/core/$1.list
+		> "$DIR/var/log/removed_pkgs/$1-$version+$release-$(date +%F)"
+	rm "$DIR/etc/core/$1.list"
 
 	print_insrem $TMPDIR/core.info
 }
@@ -156,17 +156,17 @@ remove_pkg() { # [pkg] [dir]
 query_pkg() { # [file] | [pkg dir]
 	if echo $1 | grep -qF \.cpk
 	then
-		if ! (check_file $1); then return 10; fi
+		if ! (check_file "$1"); then return 10; fi
 		CUR="$(pwd)"
 		if echo $1 | grep -q ^/
-		then (cd $TMPDIR; tar xzf $1 core.info)
-		else (cd $TMPDIR; tar xzf $CUR/$1 core.info)
+		then (cd "$TMPDIR"; tar xzf "$1" core.info)
+		else (cd "$TMPDIR"; tar xzf "$CUR/$1" core.info)
 		fi
 
-		INFO=$TMPDIR/core.info
+		INFO="$TMPDIR/core.info"
 	else
 		DIR="$(choose_dir / $2)"
-		if ! (check_dir $DIR)
+		if ! (check_dir "$DIR")
 		then return 11
 		fi
 
@@ -174,7 +174,7 @@ query_pkg() { # [file] | [pkg dir]
 		then return 12
 		fi
 
-		INFO=$DIR/etc/core/$1.info
+		INFO="$DIR/etc/core/$1.info"
 	fi
 
 	MAN="$TMPDIR/man"
@@ -286,23 +286,23 @@ create_pkg() { # [dir]
 }
 
 extract_pkg() { # [file] [dir]
-	if ! (check_file $1)
+	if ! (check_file "$1")
 	then return 15
 	fi
 
 	CUR="$(pwd)"
 
 	if echo $1 | grep -q ^/
-	then (cd $TMPDIR; tar xzf $1 core.info)
-	else (cd $TMPDIR; tar xzf $CUR/$1 core.info)
+	then (cd $TMPDIR; tar xzf "$1" core.info)
+	else (cd $TMPDIR; tar xzf "$CUR/$1" core.info)
 	fi
 
 	PKG="$(get_var PKG $TMPDIR/core.info)"
 	DIR="$(choose_dir $PKG $2)"
-	mkdir -p $DIR
+	mkdir -p "$DIR"
 	if echo $1 | grep -q ^/
-	then (cd $DIR; tar xzpf $1)
-	else (cd $DIR; tar xzpf $CUR/$1)
+	then (cd "$DIR"; tar xzpf "$1")
+	else (cd "$DIR"; tar xzpf "$CUR/$1")
 	fi
 }
 
@@ -317,13 +317,13 @@ upgrade_pkg() {
 	then return 17
 	fi
 
-	pkgname=$1
-	if ! (check_pkg "${pkgname%-*.cpk}" "$DIR")
+	pkgname="$1"
+	if ! (check_pkg $(basename "${pkgname%-*.cpk}") "$DIR")
 	then return 18
 	fi
 	unset pkgname
 
-	extract_pkg $1 $DIR
+	extract_pkg "$1" "$DIR"
 	PKG="$(get_var PKG $DIR/core.info)"
 	sort -u $DIR/etc/core/$PKG.list > /tmp/oldpkg.$$
 	sort -u $DIR/core.list > /tmp/newpkg.$$
@@ -346,20 +346,20 @@ print_usage() {
 }
 
 main() {
-	mkdir $TMPDIR
+	mkdir "$TMPDIR"
 
 	case "$1" in
-		-c) create_pkg $2 $3;;
-		-i) install_pkg $2 $3;;
-		-l) list_pkg $2 $3;;
-		-q) query_pkg $2 $3;;
-		-r) remove_pkg $2 $3;;
-		-u) upgrade_pkg $2 $3;;
-		-x) extract_pkg $2 $3;;
+		-c) create_pkg "$2" "$3";;
+		-i) install_pkg "$2" "$3";;
+		-l) list_pkg "$2" "$3";;
+		-q) query_pkg "$2" "$3";;
+		-r) remove_pkg "$2" "$3";;
+		-u) upgrade_pkg "$2" "$3";;
+		-x) extract_pkg "$2" "$3";;
 		*) print_usage;;
 	esac
 
-	rm -R $TMPDIR
+	rm -R "$TMPDIR"
 }
 
 main $*
