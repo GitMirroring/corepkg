@@ -123,34 +123,34 @@ install_pkg() { # [file] [dir]
 
 remove_pkg() { # [pkg] [dir]
 	DIR="$(choose_dir / $2)"
-	if ! (check_dir $DIR)
+	if ! (check_dir "$DIR")
 	then return 8
 	fi
 
-	if ! (check_pkg "$1" $DIR)
+	if ! (check_pkg "$1" "$DIR")
 	then return 9
 	fi
 
-	sort -u "$DIR/etc/core/*.list" >/tmp/allpkgs.$$
-	sort -u "$DIR/etc/core/$1.list" >/tmp/"$1".$$
-	comm -12 /tmp/allpkgs.$$ /tmp/"$1".$$ >/tmp/rmfiles.$$
+	sort -u "$DIR"/etc/core/*.list > /tmp/allpkgs.$$
+	sort -u "$DIR"/etc/core/$1.list > /tmp/"$1".$$
+	comm -12 /tmp/allpkgs.$$ /tmp/"$1".$$ > /tmp/rmfiles.$$
 	while read i
-	do rm "$DIR/$i"
-		rmdir -p $(dirname "$DIR/$i") 2> /dev/null
+	do rm "$DIR"/$i
+		rmdir -p $(dirname "$DIR"/$i) 2> /dev/null
 	done < /tmp/rmfiles.$$
 
-	if ! (test -d $DIR/var/log/removed_pkgs)
-	then mkdir -m 755 $DIR/var/log/removed_pkgs
+	if ! (test -d "$DIR"/var/log/removed_pkgs)
+	then mkdir -m 755 "$DIR"/var/log/removed_pkgs
 	fi
 
-	mv "$DIR/etc/core/$1.info" "$TMPDIR/core.info"
-	version="$(get_var MAJOR $TMPDIR/core.info)"
-	release="$(get_var MINOR $TMPDIR/core.info)"
+	mv "$DIR"/etc/core/$1.info "$TMPDIR"/core.info
+	version="$(get_var MAJOR "$TMPDIR"/core.info)"
+	release="$(get_var MINOR "$TMPDIR"/core.info)"
 	cat "$TMPDIR"/core.info /tmp/rmfiles.$$ \
-		> "$DIR/var/log/removed_pkgs/$1-$version+$release-$(date +%F)"
-	rm "$DIR/etc/core/$1.list"
+		> "$DIR"/var/log/removed_pkgs/$1-$version+$release-$(date +%F)
+	rm "$DIR"/etc/core/$1.list
 
-	print_insrem $TMPDIR/core.info
+	print_insrem "$TMPDIR"/core.info
 }
 
 query_pkg() { # [file] | [pkg dir]
