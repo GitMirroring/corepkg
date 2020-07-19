@@ -12,8 +12,8 @@ BIN_URL=http://nongnu.org/corepkg$
 BIN_DATE=19 July 2020$
 
 COMPILE=$
-DEPENDS=awk sh grep nroff sed tar$
-RELATED=$
+DEPENDS=awk basename grep nroff sed sh tar$
+RELATED=coreutils$
 
 INSTALL=mkdir -m 755 /etc/core$
 REMOVE=$

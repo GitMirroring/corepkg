@@ -35,8 +35,8 @@ if test -d /tmp/$DIST-$PKG/
 then rm -rf /tmp/$DIST-$PKG/
 fi
 
-rm -rf $PKG-$VERSION
-tar xzf $PKG-$VERSION.tar.gz || exit 4
+rm -rf $PKG
+tar xjf $PKG-$VERSION.tar.bz2 || exit 4
 cd $PKG || exit 5
 
 mkdir -pm 755 /tmp/$DIST-$PKG/usr/bin
@@ -58,4 +58,4 @@ then echo "$PKG has been installed to /tmp/$DIST-$PKG/" 1>&2
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -rf /tmp/$DIST-$PKG/
 fi
-rm -rf $PKG-$VERSION
+rm -rf $PKG
