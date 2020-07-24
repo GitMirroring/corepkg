@@ -2,17 +2,17 @@ PKG=corepkg$
 NAME=corepkg$
 DESC=core package [.cpk] handler$
 
-MAJOR=6$
+MAJOR=7$
 MINOR=1$
 
 SRC_URL=http://download.savannah.gnu.org/releases/corepkg/$
-SRC_DATE=19 July 2020$
+SRC_DATE=24 July 2020$
 
 BIN_URL=http://nongnu.org/corepkg$
-BIN_DATE=19 July 2020$
+BIN_DATE=24 July 2020$
 
 COMPILE=$
-DEPENDS=awk basename grep nroff sed sh tar$
+DEPENDS=awk basename grep more nroff sed sh tar$
 RELATED=coreutils$
 
 INSTALL=mkdir -m 755 /etc/core$
