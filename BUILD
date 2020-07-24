@@ -21,7 +21,7 @@
 
 DIST=Core
 PKG=corepkg
-VERSION=6
+VERSION=7
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -41,20 +41,17 @@ cd $PKG || exit 5
 
 mkdir -pm 755 /tmp/$DIST-$PKG/usr/bin
 mkdir -pm 755 /tmp/$DIST-$PKG/usr/man/man8
-mkdir -pm 755 /tmp/$DIST-$PKG/usr/share/$PKG
 cp man/corepkg.8 /tmp/$DIST-$PKG/usr/man/man8/
-gzip /tmp/$DIST-$PKG/usr/man/man8/corepkg.8
+gzip -9 /tmp/$DIST-$PKG/usr/man/man8/corepkg.8
 cp src/corepkg /tmp/$DIST-$PKG/usr/bin/ && chmod a+x /tmp/$DIST-$PKG/usr/bin/*
-cp COPYING /tmp/$DIST-$PKG/usr/share/$PKG
-gzip /tmp/$DIST-$PKG/usr/share/$PKG/COPYING
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/
-chmod -R u+w,go+r-w,a-s /tmp/$DIST-$PKG*/
-find /tmp/$DIST-$PKG*/ -type d -exec chmod ugo+x "{}" \;
+chmod -R u+w,go+r-w,a-s /tmp/$DIST-$PKG/
+find /tmp/$DIST-$PKG*/ -type d -exec chmod ugo+x {} \;
 if test $(id -u) -ne 0
-then echo "$PKG has been installed to /tmp/$DIST-$PKG/" 1>&2
-	echo "Before packaging: chown -R root: /tmp/$DIST-$PKG/" 1>&2
+then echo $PKG has been installed to /tmp/$DIST-$PKG/ 1>&2
+	echo Before packaging: chown -R root: /tmp/$DIST-$PKG/ 1>&2
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -rf /tmp/$DIST-$PKG/
 fi

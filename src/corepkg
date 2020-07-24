@@ -332,16 +332,16 @@ upgrade_pkg() {
 	unset pkgname
 
 	extract_pkg "$1" "$DIR"
-	PKG="$(get_var PKG $DIR/core.info)"
-	sort -u $DIR/etc/core/$PKG.list > /tmp/oldpkg.$$
-	sort -u $DIR/core.list > /tmp/newpkg.$$
-	mv $DIR/core.info $DIR/etc/core/$PKG.info
-	mv $DIR/core.list $DIR/etc/core/$PKG.list
-	chmod a+r $DIR/etc/core/$PKG.{info,list}
+	PKG="$(get_var PKG "$DIR"/core.info)"
+	sort -u "$DIR"/etc/core/$PKG.list > /tmp/oldpkg.$$
+	sort -u "$DIR"/core.list > /tmp/newpkg.$$
+	mv "$DIR"/core.info "$DIR"/etc/core/$PKG.info
+	mv "$DIR"/core.list "$DIR"/etc/core/$PKG.list
+	chmod a+r "$DIR"/etc/core/$PKG.{info,list}
 	comm -23 /tmp/oldpkg.$$ /tmp/newpkg.$$ > /tmp/rmlist.$$
 	while read i
-	do rm "$DIR/$i"
-		rmdir -p $(dirname "$DIR/$i") 2> /dev/null
+	do rm "$DIR"/"$i"
+		rmdir -p $(dirname "$DIR"/"$i") 2> /dev/null
 	done </tmp/rmlist.$$
 }
 
