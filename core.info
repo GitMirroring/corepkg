@@ -13,9 +13,9 @@ BIN_DATE=24 July 2020$
 
 COMPILE=$
 DEPENDS=awk basename grep more nroff sed sh tar$
-RELATED=coreutils$
+RELATED=coreutils, util-linux$
 
-INSTALL=mkdir -m 755 /etc/core$
-REMOVE=$
+INSTALL=mkdir -m 755 /etc/core/$
+REMOVE=rmdir /etc/core/$
 
 NOTES=$
