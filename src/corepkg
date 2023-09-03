@@ -1,7 +1,7 @@
 #!/bin/sh
 # corepkg - The Core GNU/Linux Distro package manager.
 # Copyright 2003 Josh Devan <jd@eknitek.net>
-# Copyright 2011-2012, 2014-2017, 2020 David Egan Evans <sinuhe@gnu.org>
+# Copyright 2011-2012, 2014-2017, 2020, 2023 David Egan Evans <sinuhe@gnu.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ print_insrem() { # [core.info]
 
 	MAN="$TMPDIR/man"
 
-	echo '.TH "" "CorePKG" "" () ""' > $MAN
+	echo '.TH "" "" "D. E. Evans' Core Distribution" () "D. E. Evans Core Distribution"' > $MAN
 
 	echo .SH PACKAGE >> $MAN
 	echo $(get_var PKG "$1") $(get_var MAJOR "$1")+$(get_var MINOR "$1") >> $MAN
@@ -181,7 +181,7 @@ query_pkg() { # [file] | [pkg dir]
 
 	MAN="$TMPDIR/man"
 
-	echo '.TH "" "CorePKG" "" () ""' > $MAN
+	echo '.TH "" "" "D. E. Evans' Core Distribution" () "D. E. Evans Core Distribution"' > $MAN
 
 	echo .SH NAME >> $MAN
 	get_var NAME $INFO >> $MAN
