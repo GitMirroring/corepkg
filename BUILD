@@ -1,27 +1,22 @@
 # CorePKG build script for Core.
-# Copyright 2011-2012, 2015-2017, 2020 David Egan Evans <sinuhe@gnu.org>
+# Copyright David Egan Evans <sinuhe@gnu.org>
 #
-# This software is provided 'as-is', without any express or implied
-# warranty. In no event will the authors be held liable for any damages
-# arising from the use of this software.
+# This program is free software; you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License as published by the 
+# Free Software Foundation; either version 2 of the License, or (at your 
+# option) any later version.
 #
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
-# freely, subject to the following restrictions:
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranty of 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+# General Public License for more details.
 #
-# 1. The origin of this software must not be misrepresented; you must
-# not claim that you wrote the original software. If you use this
-# software in a product, an acknowledgment in the product documentation
-# would be appreciated but is not required.
-#
-# 2. Altered source versions must be plainly marked as such, and must 
-# not be misrepresented as being the original software.
-#
-# 3. This notice may not be removed or altered from any source distribution.
+# You should have received a copy of the GNU General Public License along 
+# with this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=Core
 PKG=corepkg
-VERSION=7
+VERSION=8
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -42,13 +37,11 @@ cd $PKG || exit 5
 mkdir -pm 755 /tmp/$DIST-$PKG/usr/bin
 mkdir -pm 755 /tmp/$DIST-$PKG/usr/man/man8
 cp man/corepkg.8 /tmp/$DIST-$PKG/usr/man/man8/
-gzip -9 /tmp/$DIST-$PKG/usr/man/man8/corepkg.8
+bzip2 -9 /tmp/$DIST-$PKG/usr/man/man8/corepkg.8
 cp src/corepkg /tmp/$DIST-$PKG/usr/bin/ && chmod a+x /tmp/$DIST-$PKG/usr/bin/*
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/
-chmod -R u+w,go+r-w,a-s /tmp/$DIST-$PKG/
-find /tmp/$DIST-$PKG*/ -type d -exec chmod ugo+x {} \;
 if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG/ 1>&2
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG/ 1>&2
