@@ -1,7 +1,7 @@
 #!/bin/sh
 # corepkg - The Core GNU/Linux Distro package manager.
 # Copyright 2003 Josh Devan <jd@eknitek.net>
-# Copyright 2011-2012, 2014-2017, 2020, 2023, 2025 David Egan Evans <sinuhe@gnu.org>
+# Copyright 2011-2012, 2014-2017, 2020, 2023, 2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-# Based on CorePKG version 1
+# Based on CorePKG version 1 from Josh Devin
+# tar xzf is not a POSIX tar (when there was one) syntax, but is consistent
+# with ustar. GNU tar format recognition was introduced n 1.21, so not
+# specifying it, e.g. xf, has flexibility with different compression types.
+# more is less useful than GNU less and is what is used with Core/Core3/Core64.
+# gzip is not POSIX, but compress -g is.
 
 TMPDIR=/tmp/$RANDOM
 
@@ -84,6 +89,7 @@ print_insrem() { # [core.info]
 		echo "$REMOVE" >> $MAN
 	fi
 
+	#nroff -mman $MAN 2> /dev/null | less -Rs
 	nroff -mman $MAN 2> /dev/null | more -s
 }
 
@@ -94,8 +100,8 @@ install_pkg() { # [file] [dir]
 
 	CUR="$(pwd)"
 	if echo $1 | grep -q ^/
-	then (cd $TMPDIR; tar xzf "$1" core.info)
-	else (cd $TMPDIR; tar xzf "$CUR/$1" core.info)
+	then (cd $TMPDIR; tar xf "$1" core.info)
+	else (cd $TMPDIR; tar xf "$CUR/$1" core.info)
 	fi
 
 	PKG="$(get_var PKG $TMPDIR/core.info)"
@@ -110,8 +116,8 @@ install_pkg() { # [file] [dir]
 	fi
 
 	if echo $1 | grep -q ^/
-	then (cd $DIR; tar xzpf "$1")
-	else (cd $DIR; tar xzpf "$CUR/$1")
+	then (cd $DIR; tar xpf "$1")
+	else (cd $DIR; tar xpf "$CUR/$1")
 	fi
 
 	mv $DIR/core.info $DIR/etc/core/$PKG.info
@@ -159,8 +165,8 @@ query_pkg() { # [file] | [pkg dir]
 		if ! (check_file "$1"); then return 10; fi
 		CUR="$(pwd)"
 		if echo $1 | grep -q ^/
-		then (cd "$TMPDIR"; tar xzf "$1" core.{info,list})
-		else (cd "$TMPDIR"; tar xzf "$CUR/$1" core.{info,list})
+		then (cd "$TMPDIR"; tar xf "$1" core.{info,list})
+		else (cd "$TMPDIR"; tar xf "$CUR/$1" core.{info,list})
 		fi
 
 		INFO="$TMPDIR/core.info"
@@ -248,6 +254,7 @@ query_pkg() { # [file] | [pkg dir]
 		echo .br >> $MAN
 	done
 
+	#nroff -mman $MAN 2> /dev/null | less -Rs
 	nroff -mman $MAN 2> /dev/null | more -s
 }
 
@@ -289,7 +296,7 @@ create_pkg() { # [dir]
 
 	FILE="$(get_var PKG core.info)-$(get_var MAJOR core.info)+$(get_var MINOR core.info)"
 	tar cf $CUR/$FILE.tar *
-	gzip $CUR/$FILE.tar
+	gzip -9 $CUR/$FILE.tar
 	mv $CUR/$FILE.tar.gz $CUR/$FILE.cpk
 }
 
@@ -301,16 +308,16 @@ extract_pkg() { # [file] [dir]
 	CUR="$(pwd)"
 
 	if echo $1 | grep -q ^/
-	then (cd $TMPDIR; tar xzf "$1" core.info)
-	else (cd $TMPDIR; tar xzf "$CUR/$1" core.info)
+	then (cd $TMPDIR; tar xf "$1" core.info)
+	else (cd $TMPDIR; tar xf "$CUR/$1" core.info)
 	fi
 
 	PKG="$(get_var PKG $TMPDIR/core.info)"
 	DIR="$(choose_dir $PKG $2)"
 	mkdir -p "$DIR"
 	if echo $1 | grep -q ^/
-	then (cd "$DIR"; tar xzpf "$1")
-	else (cd "$DIR"; tar xzpf "$CUR/$1")
+	then (cd "$DIR"; tar xpf "$1")
+	else (cd "$DIR"; tar xpf "$CUR/$1")
 	fi
 }
 
