@@ -24,6 +24,11 @@
 # more is less useful than GNU less and is what is used with Core/Core3/Core64.
 # gzip is not POSIX, but compress -g is.
 
+# If TMPDIR=/tmp/ the use of rm -R is destructive:
+if ! test "${RANDOM+x}"
+then echo the RANDOM variable is not available in this shell 1>&2
+	exit 2
+fi
 TMPDIR=/tmp/$RANDOM
 
 check_file() { # [file]
