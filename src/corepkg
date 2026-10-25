@@ -94,7 +94,7 @@ print_insrem() { # [core.info]
 		echo "$REMOVE" >> $MAN
 	fi
 
-	#nroff -mman $MAN 2> /dev/null | less -Rs
+	#nroff -mman $MAN 2> /dev/null | less -rs
 	nroff -mman $MAN 2> /dev/null | more -s
 }
 
@@ -259,7 +259,7 @@ query_pkg() { # [file] | [pkg dir]
 		echo .br >> $MAN
 	done
 
-	#nroff -mman $MAN 2> /dev/null | less -Rs
+	#nroff -mman $MAN 2> /dev/null | less -rs
 	nroff -mman $MAN 2> /dev/null | more -s
 }
 
